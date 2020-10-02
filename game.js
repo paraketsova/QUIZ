@@ -15,16 +15,61 @@ class Game {
   }
 
   play() { //игрок запустил игру, мы выводим диал окно с запросом имени и кол-ва вопросов квиза
-    console.log('ssss');
     this.root.innerHTML = ''; //удаляем кнопку play now, теперь root пуст
+    
+    const labelnamesRoot = document.createElement('p'); //создаем текст к input для ввода имени 
+    labelnamesRoot.innerText = ("Player's name:");
+    this.root.appendChild(labelnamesRoot); 
+
     const namesRoot = document.createElement('input'); //создаем input для ввода имени 
     this.root.appendChild(namesRoot); 
 
-    const sizeQuizRoot = document.createElement('input'); //создаем input для определения кол-ва вопросов 
-    this.root.appendChild(sizeQuizRoot);
 
+    const labelSizeQuizRoot = document.createElement('p'); //создаем текст к input для определения кол-ва вопросов
+    labelSizeQuizRoot.innerText = ("Please choose number of questions:");
+    this.root.appendChild(labelSizeQuizRoot); 
 
+    const divSizeQuiz = document.createElement('div'); //создаем input для радиокнопок
+    this.root.appendChild(divSizeQuiz); 
+
+    const sizeQuizRadio5 = document.createElement('input'); //создаем input для выбора 5 вопросов 
+    divSizeQuiz.appendChild(sizeQuizRadio5);
+    sizeQuizRadio5.type = 'radio';
+    sizeQuizRadio5.name = 'sizeQuizRadio'; // задаём обеим кнопкам одно имя, чтобы (или)
+    sizeQuizRadio5.id = 'radio5';
+    const labelRadio5 = document.createElement('label'); //создаем лейбл к input для выбора 5 вопросов 
+    labelRadio5.for = ('radio5');
+    labelRadio5.innerText = ('5');
+    divSizeQuiz.appendChild(labelRadio5);
+
+    const sizeQuizRadio10 = document.createElement('input'); //создаем input для выбора 10 вопросов 
+    divSizeQuiz.appendChild(sizeQuizRadio10);
+    sizeQuizRadio10.type = 'radio';
+    sizeQuizRadio10.name = 'sizeQuizRadio';  // задаём обеим кнопкам одно имя, чтобы (или)
+    sizeQuizRadio10.id = 'radio10';
+    const labelRadio10 = document.createElement('label'); //создаем лейбл к input для выбора 10 вопросов 
+    labelRadio10.for = ('radio10');
+    labelRadio10.innerText = ('10');
+    divSizeQuiz.appendChild(labelRadio10);
+
+    const btnGo = document.createElement('button'); //создаем кнопку GO как элемент 
+    btnGo.innerHTML = 'Go!'; 
+    this.root.appendChild(btnGo);
+    btnGo.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+      this.go();
+    })
+    
   }
+
+  go () {
+    console.log ('nanana');
+  }
+
+
+
+
+
+
   
   
   takeQuests_10 () {
