@@ -1,7 +1,7 @@
 class Game {
   constructor(){
-    this.player = new Player(name);
-    this.question = new Question();
+    this.player = null;
+    this.questionList = null;
     this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
   }
   start (event) {
@@ -22,7 +22,8 @@ class Game {
     this.root.appendChild(labelnamesRoot); 
 
     const namesRoot = document.createElement('input'); //создаем input для ввода имени 
-    this.root.appendChild(namesRoot); 
+    this.root.appendChild(namesRoot);
+    namesRoot.id = 'name';
 
 
     const labelSizeQuizRoot = document.createElement('p'); //создаем текст к input для определения кол-ва вопросов
@@ -37,6 +38,8 @@ class Game {
     sizeQuizRadio5.type = 'radio';
     sizeQuizRadio5.name = 'sizeQuizRadio'; // задаём обеим кнопкам одно имя, чтобы (или)
     sizeQuizRadio5.id = 'radio5';
+    sizeQuizRadio5.value = 'radio5';
+
     const labelRadio5 = document.createElement('label'); //создаем лейбл к input для выбора 5 вопросов 
     labelRadio5.for = ('radio5');
     labelRadio5.innerText = ('5');
@@ -47,22 +50,28 @@ class Game {
     sizeQuizRadio10.type = 'radio';
     sizeQuizRadio10.name = 'sizeQuizRadio';  // задаём обеим кнопкам одно имя, чтобы (или)
     sizeQuizRadio10.id = 'radio10';
+    sizeQuizRadio10.value = 'radio10';
+
     const labelRadio10 = document.createElement('label'); //создаем лейбл к input для выбора 10 вопросов 
     labelRadio10.for = ('radio10');
     labelRadio10.innerText = ('10');
     divSizeQuiz.appendChild(labelRadio10);
 
-    const btnGo = document.createElement('button'); //создаем кнопку GO как элемент 
-    btnGo.innerHTML = 'Go!'; 
-    this.root.appendChild(btnGo);
-    btnGo.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
-      this.go();
+    const btnAskQ = document.createElement('button'); //создаем кнопку GO как элемент 
+    btnAskQ.innerHTML = 'Go!'; 
+    this.root.appendChild(btnAskQ);
+    btnAskQ.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+      this.askQ();
     })
-    
   }
 
-  go () {
-    console.log ('nanana');
+  askQ () {
+    let nameInput = document.getElementById('name');
+    this.player = new Player(nameInput.value);
+    console.log(this.player.name); ////    TEST
+
+    let 
+
   }
 
 
