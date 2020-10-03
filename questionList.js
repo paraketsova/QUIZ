@@ -1,7 +1,7 @@
 class QuestionList {
   constructor () {
-    this.sizeQuiz = sizeQuiz;
-    this.item = item;
-  }
+    /* this.sizeQuiz = questionList.sizeQuiz;
+    this.item = questionList.item; */
+  } 
 
 }
