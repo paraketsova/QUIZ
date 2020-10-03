@@ -4,7 +4,7 @@ class Game {
     this.questionList = null;
     this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
   }
-  
+
   start (event) {
     const btnPlay = document.createElement('button'); //создаем кнопку как элемент 
 
@@ -73,6 +73,7 @@ class Game {
     this.player = new Player(nameInput.value);
     console.log(this.player.name); ////    TEST
 
+
     let sizeQuizRadio5 = document.getElementById('radio5');
     let size = 0;
 
@@ -82,17 +83,14 @@ class Game {
     else { size = '10'; 
     }
     
-    let link = ('https://quizapi.io/api/v1/questions?apiKey=kQ640FJsMce9YQXnWD6fypSfdEBccAx3s71YzfAb&category=code&difficulty=Easy&limit=' + size);
-    
-    fetch(link)
-      .then((response) => response.json())
-      .then((data) => {
-        let questionList = data;
-        this.questionList = new QuestionList ();
-        console.log (questionList);
-      })
+    this.questionList = new QuestionList(size);
+    this.questionList.load().then((result) => {
+      // show next page 
+    });
   }
 }
+
+
 
 
 /*   takeQuests_1 () {
