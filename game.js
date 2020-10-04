@@ -85,7 +85,12 @@ class Game {
     
     this.questionList = new QuestionList(size);
     this.questionList.load().then((result) => {
-      // show next page 
+      root.innerHTML = '';  // delete name/size block with btn  
+      console.log(this.questionList); //TEST
+      
+
+
+
     });
   }
 }
