@@ -1,4 +1,8 @@
 body{
-  background-color:linen;
   font-family: Arial;
+}
+
+#btnBack, #btnForward {
+  width: 3em;
+  height: 3em;
 }
