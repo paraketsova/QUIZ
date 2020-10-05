@@ -2,6 +2,8 @@ class Game {
   constructor(){
     this.player = null;
     this.questionList = null;
+    this.currentQuestion = 0;
+
     this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
   }
 
@@ -81,52 +83,74 @@ class Game {
       size = '5'; 
     } 
     else {size = '10'; 
-    }
+    } 
     
     this.questionList = new QuestionList(size);
     this.questionList.load().then((result) => {
-      root.innerHTML = '';  // delete name/size block with btn 
-      this.askQues(); 
+      this.askCurrentQuestion(); 
       console.log(this.questionList); //TEST
     });
   }
-askQues () {
-  // TODO - для каждого вопроса из QuestionList  item[i]:
-  let questionCounter = document.createElement('div'); //создаем строку с номером текущего вопроса
-  questionCounter.innerHTML = '#';  // TODO - выводить номер вопроса начиная с 1 = (i=o +1)
-  this.root.appendChild(questionCounter); 
 
-  let questText = document.createElement('div'); //создаем поле для вывода текста вопроса
-  questText.innerHTML = this.questionList.items[0].question;  
-  this.root.appendChild(questText); 
+  askCurrentQuestion() {     // - для каждого вопроса из QuestionList  item[i]:
 
-  let answerList = document.createElement('ul'); //создаем поле для слота ответов
-  this.root.appendChild(answerList); 
+    root.innerHTML = '';  // delete name/size block with btn 
+    let questionCounter = document.createElement('div'); //создаем строку с номером текущего вопроса
+    questionCounter.innerHTML = (this.currentQuestion + 1);  // TODO - выводить номер вопроса начиная с 1 = (i=o +1)
+    this.root.appendChild(questionCounter); 
   
-  //TODO - цикл для каждого answer из answers, чьё значение не равно 'null':
-  let answerText = document.createElement('li'); //создаем поле для текста каждого ответа
-  answerText.innerHTML = this.questionList.items[0].answers.answer_a;  
-  answerList.appendChild(answerText); 
+    let questText = document.createElement('div'); //создаем поле для вывода текста вопроса
+    questText.innerHTML = this.questionList.items[this.currentQuestion].question;  
+    this.root.appendChild(questText); 
+  
+    let answerList = document.createElement('ul'); //создаем поле для слота ответов
+    this.root.appendChild(answerList); 
+    
+    for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые
+      const element = this.questionList.items[this.currentQuestion].answers[key];
+      if (element !== null) {
+        let answerText = document.createElement('li'); //создаем поле для текста каждого ответа
+        answerText.innerHTML = escapeHTML(element);  
+        answerList.appendChild(answerText);
+      }
+    }
+    //TODO переделать поля с ответами в чекбоксы. 
 
-  // ниже - кнопки туда-сюда.
-  /* const btnBack = document.createElement('input'); //создаем кнопку назад 
-  btnBack.type ='image';
-  btnBack.src = 'btnBck.png';
-  btnBack.id = 'btnBack';
-  this.root.appendChild(btnBack); 
+    let btnNext = document.createElement('input');
+    btnNext.type = 'image';
+    btnNext.src = 'btnNext.png';
+    btnNext.id = 'btnNext';
+    this.root.appendChild(btnNext); 
 
-  const btnForward = document.createElement('input'); //создаем кнопку вперёд
-  btnForward.type ='image';
-  btnForward.src = 'btnFrwrd.png';
-  btnForward.id = 'btnForward';
-  this.root.appendChild(btnForward); 
- */
+    btnNext.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+      //TODO отправить выбранный ответ в массив (ответов на все вопросы квиза)
+      this.currentQuestion++;
+      if (this.currentQuestion < this.questionList.size) {
+        this.askCurrentQuestion();
+      }
+      else {
+        console.log('lalala');
+      };
+    })
 
+  }
+  /* getResult() {
+    console.log(lalala);
+  } */
 }
 
-}
+// кнопки туда-сюда.
+    /* const btnBack = document.createElement('input'); //создаем кнопку назад 
+    btnBack.type ='image';
+    btnBack.src = 'btnBck.png';
+    btnBack.id = 'btnBack';
+    this.root.appendChild(btnBack); 
 
-
+    const btnForward = document.createElement('input'); //создаем кнопку вперёд
+    btnForward.type ='image';
+    btnForward.src = 'btnFrwrd.png';
+    btnForward.id = 'btnForward';
+    this.root.appendChild(btnForward); */
 
 
 /*   takeQuests_1 () {
