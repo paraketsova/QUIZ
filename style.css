@@ -9,3 +9,17 @@ h1 {
 #btnNext {
   height: 3em;
 }
+
+#questText {
+  height: 3em;
+}
+
+#answerList {
+  height: 8em;
+  border: 1px solid orangered;
+}
+
+
+li {
+  list-style-type: none;
+}
