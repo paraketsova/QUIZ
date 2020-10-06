@@ -3,6 +3,7 @@ class Game {
     this.player = null;
     this.questionList = null;
     this.currentQuestion = 0;
+    this.playersAnswerList = [];  // [[0],[1]..] array.length = size.
 
     this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
   }
@@ -120,17 +121,17 @@ class Game {
 
         let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
         labelAnswerText.for = ('answer_' + this.currentQuestion);
+      /*   labelAnswerText.id = ('answer_' + this.currentQuestion); */
+
         
 
         labelAnswerText.innerHTML = escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
         answerTextWrap.appendChild(answerText);
         answerTextWrap.appendChild(labelAnswerText);
 
-
       }
     }
-    //TODO переделать поля с ответами в чекбоксы. 
-
+   
     let btnNext = document.createElement('input');
     btnNext.type = 'image';
     btnNext.src = 'btnNext.png';
@@ -139,12 +140,14 @@ class Game {
 
     btnNext.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
       //TODO отправить выбранный ответ в массив (ответов на все вопросы квиза)
-      this.currentQuestion++;
-      if (this.currentQuestion < this.questionList.size) {
+      
+      console.log (this.currentQuestion);
+      if (this.currentQuestion < this.questionList.size - 1) {
+        this.checkAnswers();
+        this.currentQuestion++;
         this.askCurrentQuestion();
-      }
-      else {  //  TODO переход к окну с результатом после последнего вопроса.
-        console.log('lalala'); //TEST
+      } else {
+        //  TODO переход к окну с результатом после последнего вопроса.
         fetch('https://quizapi.io/api/v1/questions?apiKey=kQ640FJsMce9YQXnWD6fypSfdEBccAx3s71YzfAb&category=code&difficulty=Easy&limit=1&tags=JavaScript')
         .then((response) => response.json())
         .then((json) => console.log(json));
@@ -152,9 +155,24 @@ class Game {
     })
 
   }
-  /* getResult() {
-    console.log(lalala);
-  } */
+
+  checkAnswers() {
+    // TODO проверить checkad answers и пушнуть в массив (size = кол-во элм в массиве) имя ответа игрока 
+
+    let checkboxList = document.getElementsByName('answer_' + this.currentQuestion);
+    let playersAnswer = [];
+    for (let i=0; i < checkboxList.length; i++) {
+      if (checkboxList[i].checked) {
+      playersAnswer.push(checkboxList[i].id);
+      }
+      else {
+        console.log('bobobo');
+      }
+    }
+    this.playersAnswerList.push(playersAnswer); 
+    console.log(this.playersAnswerList);  
+  }
+
 }
 
 // кнопки туда-сюда.
