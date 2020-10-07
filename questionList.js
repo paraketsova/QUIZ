@@ -20,15 +20,6 @@ class QuestionList {
   }
 }
 
-/* function getCorrectAnswers() {
-  for (let i in this.questionList.items) {
-    for (let j in this.questionList.items[i]) {
-
-    }
-  }
-} */
-
-
 
 
 /*   for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые

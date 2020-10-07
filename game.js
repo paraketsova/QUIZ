@@ -121,8 +121,6 @@ class Game {
 
         let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
         labelAnswerText.for = ('answer_' + this.currentQuestion);
-      /*   labelAnswerText.id = ('answer_' + this.currentQuestion); */
-
         
 
         labelAnswerText.innerHTML = escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
@@ -150,7 +148,7 @@ class Game {
         //  TODO переход к окну с результатом после последнего вопроса.
         console.log('YAOOOO'); //  TEST
         this.getResult();
-
+        console.log(this.playersAnswerList);  //  TEST
       };
     })
 
@@ -170,27 +168,39 @@ class Game {
       }
     }
     this.playersAnswerList.push(playersAnswer); 
-    console.log(this.playersAnswerList);  
+    console.log(this.playersAnswerList);  //  TEST
   }
 
   getResult () {
     console.log('LALALA'); 
-    root.innerHTML = '';  // delete question's block with btn 
+    let summPoints = 4;     // TEST   !!!!
 
+
+
+    root.innerHTML = '';  // delete question's block with btn 
     let resultField = document.createElement('div'); //создаем текстовый блок с результатами
-    let summPoints = 4; // TEST!!!!
     this.root.appendChild(resultField);
 
 
-    let resultField1 = document.createElement('p'); //создаем текстовый блок с результатами
-    let resultField2 = document.createElement('p'); //создаем текстовый блок с результатами
-    let resultField3 = document.createElement('p'); //создаем текстовый блок с результатами
-    resultField1.innerHTML = ('Good try, ' + this.player.name + '!');
+    let resultField1 = document.createElement('p'); //создаем строку блока
+    let resultField2 = document.createElement('p'); 
+    let resultField3 = document.createElement('p'); 
+    resultField1.innerHTML = ('Good Try, ' + this.player.name + '!');
     resultField2.innerHTML = (' You got '+ summPoints + ' out of ' + this.questionList.size + ' answers correct!');
     resultField3.innerHTML = ('');
     resultField.appendChild(resultField1);
     resultField.appendChild(resultField2);
     resultField.appendChild(resultField3);
+
+    console.log(this.questionList.items[0].correct_answers);
+
+    for (let key in  this.questionList.items[0].correct_answers) {
+      if ( this.questionList.items[0].correct_answers[key] === 'true') {
+        console.log (1);
+      } else { 
+          console.log (0);
+      }
+    }
 
 
     let btnPlayAgain =  document.createElement('button'); //add button 'Play again' btnNext.type = 'image';
@@ -200,13 +210,25 @@ class Game {
     this.root.appendChild(btnPlayAgain);
     btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
       this.play();
-      });
-
-
+    });
   }
-
 }
 
+
+/*
+for (i = 0; i < this.questionList.size - 1; i++) {
+  this.questionList.items[i].correct_answers
+}
+
+for (let key in  this.questionList.items[0].correct_answers) {
+  if ( this.questionList.items[i].correct_answers === 'true') {
+    console.log (1);
+    } else { 
+      console.log (1);
+    }
+  }
+}
+*/
 
 //=============================
 // кнопки туда-сюда.
