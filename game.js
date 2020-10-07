@@ -148,9 +148,9 @@ class Game {
         this.askCurrentQuestion();
       } else {
         //  TODO переход к окну с результатом после последнего вопроса.
-        fetch('https://quizapi.io/api/v1/questions?apiKey=kQ640FJsMce9YQXnWD6fypSfdEBccAx3s71YzfAb&category=code&difficulty=Easy&limit=1&tags=JavaScript')
-        .then((response) => response.json())
-        .then((json) => console.log(json));
+        console.log('YAOOOO'); //  TEST
+        this.getResult();
+
       };
     })
 
@@ -166,15 +166,49 @@ class Game {
       playersAnswer.push(checkboxList[i].id);
       }
       else {
-        console.log('bobobo');
+        console.log('bobobo'); //  TEST
       }
     }
     this.playersAnswerList.push(playersAnswer); 
     console.log(this.playersAnswerList);  
   }
 
+  getResult () {
+    console.log('LALALA'); 
+    root.innerHTML = '';  // delete question's block with btn 
+
+    let resultField = document.createElement('div'); //создаем текстовый блок с результатами
+    let summPoints = 4; // TEST!!!!
+    this.root.appendChild(resultField);
+
+
+    let resultField1 = document.createElement('p'); //создаем текстовый блок с результатами
+    let resultField2 = document.createElement('p'); //создаем текстовый блок с результатами
+    let resultField3 = document.createElement('p'); //создаем текстовый блок с результатами
+    resultField1.innerHTML = ('Good try, ' + this.player.name + '!');
+    resultField2.innerHTML = (' You got '+ summPoints + ' out of ' + this.questionList.size + ' answers correct!');
+    resultField3.innerHTML = ('');
+    resultField.appendChild(resultField1);
+    resultField.appendChild(resultField2);
+    resultField.appendChild(resultField3);
+
+
+    let btnPlayAgain =  document.createElement('button'); //add button 'Play again' btnNext.type = 'image';
+    //btnPlayAgain.src = 'btnNext.png';
+    btnPlayAgain.innerHTML = 'Play new game!'; 
+    btnPlayAgain.id = 'btnPlayAgain';
+    this.root.appendChild(btnPlayAgain);
+    btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+      this.play();
+      });
+
+
+  }
+
 }
 
+
+//=============================
 // кнопки туда-сюда.
     /* const btnBack = document.createElement('input'); //создаем кнопку назад 
     btnBack.type ='image';

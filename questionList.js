@@ -7,7 +7,7 @@ class QuestionList {
   load() {
     let link = ('https://quizapi.io/api/v1/questions?apiKey=kQ640FJsMce9YQXnWD6fypSfdEBccAx3s71YzfAb&category=code&difficulty=Easy&tags=JavaScript&limit=' + this.size);
    
-    return fetch(link)
+    return fetch(link) // УТОЧНИТЬ 
       .then((response) => response.json())
       .then((data) => {
         
@@ -16,6 +16,21 @@ class QuestionList {
           this.items.push(question);
         }
         return this.items; 
-      });
-    }
+      }); 
+  }
 }
+
+/* function getCorrectAnswers() {
+  for (let i in this.questionList.items) {
+    for (let j in this.questionList.items[i]) {
+
+    }
+  }
+} */
+
+
+
+
+/*   for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые
+        const element = this.questionList.items[this.currentQuestion].answers[key];
+        if (element !== null) {}}.... */
