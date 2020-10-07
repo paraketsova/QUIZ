@@ -5,6 +5,7 @@ class Game {
     this.currentQuestion = 0;
     this.playersAnswerList = [];  // [[0],[1]..] array.length = size.
 
+
     this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
   }
 
@@ -126,7 +127,6 @@ class Game {
         labelAnswerText.innerHTML = escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
         answerTextWrap.appendChild(answerText);
         answerTextWrap.appendChild(labelAnswerText);
-
       }
     }
    
@@ -137,22 +137,19 @@ class Game {
     this.root.appendChild(btnNext); 
 
     btnNext.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
-      //TODO отправить выбранный ответ в массив (ответов на все вопросы квиза)
       
       console.log (this.currentQuestion);
       if (this.currentQuestion < this.questionList.size - 1) {
-        this.checkAnswers();
+        this.checkAnswers(); //отправляем выбранный ответ в массив (ответов на все вопросы квиза)
         this.currentQuestion++;
         this.askCurrentQuestion();
       } else {
-        //  TODO переход к окну с результатом после последнего вопроса.
         console.log('YAOOOO'); //  TEST
         this.checkAnswers();
         console.log(this.playersAnswerList);  //  TEST
-        this.getResult();
+        this.getResult(); //  переход к окну с результатом после последнего вопроса.
       };
     })
-
   }
 
   checkAnswers() {
@@ -172,14 +169,27 @@ class Game {
   }
 
   getResult () {
-    console.log('LALALA'); 
-    let summPoints = 4;     // TEST   !!!!
-
-
+    let summPoints = 0;     // TEST   !!!!
 
     root.innerHTML = '';  // delete question's block with btn 
     let resultField = document.createElement('div'); //создаем текстовый блок с результатами
     this.root.appendChild(resultField);
+
+    //TODO сравниваем i массив из массива ответов пользователя с  i объектом в  объекте корректных ответов
+    for (let i = 0; i < this.playersAnswerList.length; i++) {
+      console.log(this.playersAnswerList[i]); 
+      for (let key in  this.questionList.items[i].correct_answers) { //TEST найти объект с корректными ответами для одного вопроса и проверить кто из них верен
+        if ( this.questionList.items[i].correct_answers[key] === 'true') { //перебор в объекте с корректными отв
+          if ( (this.playersAnswerList[i] + '_correct') === key) {
+            summPoints++;
+            console.log ( this.playersAnswerList[i] + ' = ' + key);
+          } else { 
+            console.log (0);
+          }
+        }
+      }
+
+    }
 
 
     let resultField1 = document.createElement('p'); //создаем строку блока
@@ -194,28 +204,6 @@ class Game {
 
     console.log(this.questionList.items[0].correct_answers);
 
-    //TODO сравниваем i массив из массива ответов пользователя с  i объектом в  объекте корректных ответов
-
-    this.playersAnswerList.forEach(function(answer) { // выбрали массив с ответом пользователя на каждоый из вопросов
-      console.log(answer); // test - OK
-      for (const element of answer) {  // выбираем
-        console.log(element);
-      }
-      
-
-    });
-    
-
-    for (let key in  this.questionList.items[0].correct_answers) { //TEST найти объект с корректными ответами для одного вопроса и проверить кто из них верен
-      if ( this.questionList.items[0].correct_answers[key] === 'true') { //перебор в объекте с корректными отв
-      
-        console.log (1);
-      } else { 
-          console.log (0);
-      }
-    }
-
-
     let btnPlayAgain =  document.createElement('button'); //add button 'Play again' btnNext.type = 'image';
     //btnPlayAgain.src = 'btnNext.png';
     btnPlayAgain.innerHTML = 'Play new game!'; 
@@ -226,40 +214,3 @@ class Game {
     });
   }
 }
-
-
-/*
-for (i = 0; i < this.questionList.size - 1; i++) {
-  this.questionList.items[i].correct_answers
-}
-
-for (let key in  this.questionList.items[0].correct_answers) {
-  if ( this.questionList.items[i].correct_answers === 'true') {
-    console.log (1);
-    } else { 
-      console.log (1);
-    }
-  }
-}
-*/
-
-//=============================
-// кнопки туда-сюда.
-    /* const btnBack = document.createElement('input'); //создаем кнопку назад 
-    btnBack.type ='image';
-    btnBack.src = 'btnBck.png';
-    btnBack.id = 'btnBack';
-    this.root.appendChild(btnBack); 
-
-    const btnForward = document.createElement('input'); //создаем кнопку вперёд
-    btnForward.type ='image';
-    btnForward.src = 'btnFrwrd.png';
-    btnForward.id = 'btnForward';
-    this.root.appendChild(btnForward); */
-
-
-/*   takeQuests_1 () {
-    fetch('https://quizapi.io/api/v1/questions?apiKey=kQ640FJsMce9YQXnWD6fypSfdEBccAx3s71YzfAb&category=code&difficulty=Easy&limit=1&tags=JavaScript')
-    .then((response) => response.json())
-    .then((json) => console.log(json));
-  }  */
