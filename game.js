@@ -116,7 +116,7 @@ class Game {
         answerList.appendChild(answerTextWrap);
         let answerText = document.createElement('input'); //создаем checkbox для текста каждого ответа
         answerText.type = 'checkbox';
-        answerText.id = ('answer_' + this.currentQuestion);
+        answerText.id = (key);
         answerText.name = ('answer_' + this.currentQuestion);
 
         let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
@@ -147,8 +147,9 @@ class Game {
       } else {
         //  TODO переход к окну с результатом после последнего вопроса.
         console.log('YAOOOO'); //  TEST
-        this.getResult();
+        this.checkAnswers();
         console.log(this.playersAnswerList);  //  TEST
+        this.getResult();
       };
     })
 
@@ -161,9 +162,8 @@ class Game {
     let playersAnswer = [];
     for (let i=0; i < checkboxList.length; i++) {
       if (checkboxList[i].checked) {
-      playersAnswer.push(checkboxList[i].id);
-      }
-      else {
+        playersAnswer.push(checkboxList[i].id);
+      } else {
         console.log('bobobo'); //  TEST
       }
     }
@@ -194,8 +194,21 @@ class Game {
 
     console.log(this.questionList.items[0].correct_answers);
 
-    for (let key in  this.questionList.items[0].correct_answers) {
-      if ( this.questionList.items[0].correct_answers[key] === 'true') {
+    //TODO сравниваем i массив из массива ответов пользователя с  i объектом в  объекте корректных ответов
+
+    this.playersAnswerList.forEach(function(answer) { // выбрали массив с ответом пользователя на каждоый из вопросов
+      console.log(answer); // test - OK
+      for (const element of answer) {  // выбираем
+        console.log(element);
+      }
+      
+
+    });
+    
+
+    for (let key in  this.questionList.items[0].correct_answers) { //TEST найти объект с корректными ответами для одного вопроса и проверить кто из них верен
+      if ( this.questionList.items[0].correct_answers[key] === 'true') { //перебор в объекте с корректными отв
+      
         console.log (1);
       } else { 
           console.log (0);
