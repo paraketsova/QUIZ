@@ -177,12 +177,12 @@ class Game {
 
     //TODO сравниваем i массив из массива ответов пользователя с  i объектом в  объекте корректных ответов
     for (let i = 0; i < this.playersAnswerList.length; i++) {
-      console.log(this.playersAnswerList[i]); 
+      console.log(this.playersAnswerList[i]); //  TEST
       for (let key in  this.questionList.items[i].correct_answers) { //TEST найти объект с корректными ответами для одного вопроса и проверить кто из них верен
         if ( this.questionList.items[i].correct_answers[key] === 'true') { //перебор в объекте с корректными отв
           if ( (this.playersAnswerList[i] + '_correct') === key) {
             summPoints++;
-            console.log ( this.playersAnswerList[i] + ' = ' + key);
+            console.log ( this.playersAnswerList[i] + ' = ' + key);  //TEST
           } else { 
             console.log (0);
           }
