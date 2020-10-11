@@ -90,7 +90,6 @@ class Game {
     this.questionList = new QuestionList(size);
     this.questionList.load().then((result) => {
       this.askCurrentQuestion(); 
-      console.log(this.questionList); //TEST
     });
   }
 
@@ -137,80 +136,102 @@ class Game {
     this.root.appendChild(btnNext); 
 
     btnNext.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
-      
-      console.log (this.currentQuestion);
+      this.savePlayersAnswer(); //отправляем выбранный ответ в массив (ответов на все вопросы квиза)
+
       if (this.currentQuestion < this.questionList.size - 1) {
-        this.checkAnswers(); //отправляем выбранный ответ в массив (ответов на все вопросы квиза)
         this.currentQuestion++;
         this.askCurrentQuestion();
       } else {
-        console.log('YAOOOO'); //  TEST
-        this.checkAnswers();
-        console.log(this.playersAnswerList);  //  TEST
-        this.getResult(); //  переход к окну с результатом после последнего вопроса.
+        this.showResults(); //  переход к окну с результатом после последнего вопроса.
       };
     })
   }
 
-  checkAnswers() {
-    // TODO проверить checkad answers и пушнуть в массив (size = кол-во элм в массиве) имя ответа игрока 
-
+  savePlayersAnswer() {      // проверить checked answers и пушнуть в массив (size = кол-во элм в массиве) имя ответа игрока 
     let checkboxList = document.getElementsByName('answer_' + this.currentQuestion);
     let playersAnswer = [];
     for (let i=0; i < checkboxList.length; i++) {
       if (checkboxList[i].checked) {
         playersAnswer.push(checkboxList[i].id);
-      } else {
-        console.log('bobobo'); //  TEST
       }
     }
     this.playersAnswerList.push(playersAnswer); 
-    console.log(this.playersAnswerList);  //  TEST
   }
 
-  getResult () {
-    let summPoints = 0;     // TEST   !!!!
-
+  showResults() {
     root.innerHTML = '';  // delete question's block with btn 
     let resultField = document.createElement('div'); //создаем текстовый блок с результатами
     this.root.appendChild(resultField);
 
-    //TODO сравниваем i массив из массива ответов пользователя с  i объектом в  объекте корректных ответов
-    for (let i = 0; i < this.playersAnswerList.length; i++) {
-      console.log(this.playersAnswerList[i]); //  TEST
-      for (let key in  this.questionList.items[i].correct_answers) { //TEST найти объект с корректными ответами для одного вопроса и проверить кто из них верен
-        if ( this.questionList.items[i].correct_answers[key] === 'true') { //перебор в объекте с корректными отв
-          if ( (this.playersAnswerList[i] + '_correct') === key) {
-            summPoints++;
-            console.log ( this.playersAnswerList[i] + ' = ' + key);  //TEST
-          } else { 
-            console.log (0);
-          }
-        }
-      }
-
-    }
-
+    let sumPoints = this.getPoints();
 
     let resultField1 = document.createElement('p'); //создаем строку блока
     let resultField2 = document.createElement('p'); 
-    let resultField3 = document.createElement('p'); 
-    resultField1.innerHTML = ('Good Try, ' + this.player.name + '!');
-    resultField2.innerHTML = (' You got '+ summPoints + ' out of ' + this.questionList.size + ' answers correct!');
-    resultField3.innerHTML = ('');
+    resultField1.innerHTML = ('Good game, ' + this.player.name + '!');
+    resultField2.innerHTML = ('You got '+ sumPoints + ' out of ' + this.questionList.size + ' answers correct!');
     resultField.appendChild(resultField1);
     resultField.appendChild(resultField2);
-    resultField.appendChild(resultField3);
-
-    console.log(this.questionList.items[0].correct_answers);
 
     let btnPlayAgain =  document.createElement('button'); //add button 'Play again' btnNext.type = 'image';
-    //btnPlayAgain.src = 'btnNext.png';
     btnPlayAgain.innerHTML = 'Play new game!'; 
     btnPlayAgain.id = 'btnPlayAgain';
     this.root.appendChild(btnPlayAgain);
     btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
       this.play();
     });
+  }
+
+  getPoints() {
+    let sumPoints = 0;
+    for (let i = 0; i < this.playersAnswerList.length; i++) {
+      const isCorrect = this.compareOneAnswer(
+        this.playersAnswerList[i],
+        this.questionList.items[i].correct_answers
+      );
+
+      if (isCorrect) {
+        sumPoints++;
+      }
+    }
+
+    return sumPoints;
+  }
+
+  compareOneAnswer(playersAnswer, correctAnswer) {
+    /* Example:
+      
+      playersAnswer = [
+        'answer_b', 
+        'answer_c'
+      ]
+      
+      correctAnswer = {
+        answer_a_correct: "false", 
+        answer_b_correct: "true", 
+        answer_c_correct: "true", 
+        answer_d_correct: "false"
+      }
+    */
+
+    for (let option in correctAnswer) {
+      const option2 = option.slice(0, -8); // 'answer_c_correct' -> 'answer_c'
+
+      // Example: option = 'answer_c_correct'
+      // Example: option2 = 'answer_c'
+
+      if (correctAnswer[option] === 'true') {
+        // This option is correct, must be in the player's answer
+        if (!playersAnswer.includes(option2)) {
+          return false;
+        }
+      } else {
+        // This option is incorrect, must not be in the player's answer
+        if (playersAnswer.includes(option2)) {
+          return false;
+        }
+      }
+    } 
+    
+    return true;
   }
 }
