@@ -103,7 +103,7 @@ class Game {
   
     let questText = document.createElement('div'); //создаем поле для вывода текста вопроса
     questText.id = 'questText';
-    questText.innerHTML = this.questionList.items[this.currentQuestion].question;  
+    questText.innerHTML = this.escapeHTML(this.questionList.items[this.currentQuestion].question);  
     this.root.appendChild(questText); 
   
     let answerList = document.createElement('ul'); //создаем поле для слота ответов
@@ -123,8 +123,7 @@ class Game {
         let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
         labelAnswerText.for = ('answer_' + this.currentQuestion);
         
-
-        labelAnswerText.innerHTML = escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
+        labelAnswerText.innerHTML = this.escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
         answerTextWrap.appendChild(answerText);
         answerTextWrap.appendChild(labelAnswerText);
       }
@@ -177,6 +176,7 @@ class Game {
     btnPlayAgain.id = 'btnPlayAgain';
     this.root.appendChild(btnPlayAgain);
     btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+      this.reset();
       this.play();
     });
   }
@@ -233,5 +233,19 @@ class Game {
     } 
     
     return true;
+  }
+
+  reset() {
+    this.player = null;
+    this.questionList = null;
+    this.currentQuestion = 0;
+    this.playersAnswerList = []; 
+  }
+
+  escapeHTML(text) {
+    return text
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;');
   }
 }
