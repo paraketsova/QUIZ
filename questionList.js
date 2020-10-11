@@ -20,8 +20,3 @@ class QuestionList {
   }
 }
 
-
-
-/*   for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые
-        const element = this.questionList.items[this.currentQuestion].answers[key];
-        if (element !== null) {}}.... */

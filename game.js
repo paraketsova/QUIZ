@@ -6,70 +6,71 @@ class Game {
     this.playersAnswerList = [];  // [[0],[1]..] array.length = size.
 
 
-    this.root = document.getElementById('root'); //так как используем в неск ф, то выносим её наверх и вместо константы она становится проперти данного класса.
+    this.root = document.getElementById('root'); //Eftersom vi anävnder den constanta i flera metoder, kan vi skapa det som egenskap för den klass.
   }
 
   start (event) {
-    const btnPlay = document.createElement('button'); //создаем кнопку как элемент 
+    const btnPlay = document.createElement('button'); //skapar button som element 
     btnPlay.id = 'btnPlay';
     btnPlay.innerHTML = 'PLAY NOW'; 
-    btnPlay.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+    btnPlay.addEventListener('click', (event) => { // vi använder lambda function och då kan vi hänvisa ('this') till yttre område, därför att Lambda function har inte 'this' egenskap.
       this.play();
     });
-    this.root.appendChild(btnPlay); // добавляем кнопку как потомка в див root
+    this.root.appendChild(btnPlay); // addera knapp i div root
   }
 
-  play() { //игрок запустил игру, мы выводим диал окно с запросом имени и кол-ва вопросов квиза
-    this.root.innerHTML = ''; //удаляем кнопку play now, теперь root пуст
+  play() { //om spelet början skapar vi fält för att fråga namn och hur många frågor i Quiz måste vi skapa
+
+    this.root.innerHTML = ''; //  då root är tom
     
-    let labelnamesRoot = document.createElement('p'); //создаем текст к input для ввода имени 
+    let labelnamesRoot = document.createElement('p'); // skapar text för input (för namn)
     labelnamesRoot.innerText = ("Player's name:");
     this.root.appendChild(labelnamesRoot); 
 
-    let namesRoot = document.createElement('input'); //создаем input для ввода имени 
+    let namesRoot = document.createElement('input'); // skapar input (för namn)
     this.root.appendChild(namesRoot);
     namesRoot.id = 'name';
 
 
-    let labelSizeQuizRoot = document.createElement('p'); //создаем текст к input для определения кол-ва вопросов
+    let labelSizeQuizRoot = document.createElement('p'); // skapar text för input (hur många frågor)
     labelSizeQuizRoot.innerText = ("Please choose number of questions:");
     this.root.appendChild(labelSizeQuizRoot); 
 
-    let divSizeQuiz = document.createElement('div'); //создаем input для радиокнопок
+    let divSizeQuiz = document.createElement('div'); //skapar input för radiobutton
     divSizeQuiz.id = 'divSizeQuiz';
     this.root.appendChild(divSizeQuiz);
  
-    let sizeQuizRadio5 = document.createElement('input'); //создаем input для выбора 5 вопросов 
+    let sizeQuizRadio5 = document.createElement('input'); //skapar input för att väljer 5 frågor 
     divSizeQuiz.appendChild(sizeQuizRadio5);
     sizeQuizRadio5.type = 'radio';
-    sizeQuizRadio5.name = 'sizeQuizRadio'; // задаём обеим кнопкам одно имя, чтобы (или)
+    sizeQuizRadio5.name = 'sizeQuizRadio'; // skapar en namn för båda radiobutton 
     sizeQuizRadio5.id = 'radio5';
     sizeQuizRadio5.value = 'radio5';
-    sizeQuizRadio5.checked = true;
+    sizeQuizRadio5.checked = true; // skapar default 'checked' position
 
-    let labelRadio5 = document.createElement('label'); //создаем лейбл к input для выбора 5 вопросов 
+    let labelRadio5 = document.createElement('label'); //  skapar label till input för att väljer 5 frågor 
     labelRadio5.setAttribute('for', 'radio5');
     labelRadio5.innerText = '5';
     divSizeQuiz.appendChild(labelRadio5);
 
-    let sizeQuizRadio10 = document.createElement('input'); //создаем input для выбора 10 вопросов 
+    let sizeQuizRadio10 = document.createElement('input'); //skapar input för att väljer 10 frågor
     divSizeQuiz.appendChild(sizeQuizRadio10);
     sizeQuizRadio10.type = 'radio';
-    sizeQuizRadio10.name = 'sizeQuizRadio';  // задаём обеим кнопкам одно имя, чтобы (или)
+    sizeQuizRadio10.name = 'sizeQuizRadio';  // *skapar en namn för båda radiobutton 
     sizeQuizRadio10.id = 'radio10';
     sizeQuizRadio10.value = 'radio10';
 
-    let labelRadio10 = document.createElement('label'); //создаем лейбл к input для выбора 10 вопросов 
+    let labelRadio10 = document.createElement('label'); // skapar label till input för att väljer 10 frågor  
     labelRadio10.setAttribute('for', 'radio10');
     labelRadio10.innerText = '10';
     divSizeQuiz.appendChild(labelRadio10);
 
-    let btnAskQ = document.createElement('button'); //создаем кнопку GO как элемент 
+    let btnAskQ = document.createElement('button'); //skapar button GO som element 
     btnAskQ.innerHTML = 'GO';
     btnAskQ.id = 'btnAskQ';
 
     this.root.appendChild(btnAskQ);
-    btnAskQ.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+    btnAskQ.addEventListener('click', (event) => { // vi använder lambda function och då kan vi hänvisa ('this') till yttre område, därför att Lambda function har inte 'this' egenskap.
       this.askNameSize();
     })
   }
@@ -103,7 +104,7 @@ class Game {
   
     let questText = document.createElement('div'); //создаем поле для вывода текста вопроса
     questText.id = 'questText';
-    questText.innerHTML = this.escapeHTML(this.questionList.items[this.currentQuestion].question);  
+    questText.innerHTML = this.escapeHTML(this.questionList.items[this.currentQuestion].question);  // användar function för att korrekt skildring HTML taggar i text med frågan
     this.root.appendChild(questText); 
   
     let answerList = document.createElement('ul'); //создаем поле для слота ответов
@@ -113,17 +114,17 @@ class Game {
     for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые
       const element = this.questionList.items[this.currentQuestion].answers[key];
       if (element !== null) {
-        let answerTextWrap = document.createElement('li'); //создаем поле для checkbox каждого ответа
+        let answerTextWrap = document.createElement('li'); //skapar checkbox wrap
         answerList.appendChild(answerTextWrap);
-        let answerText = document.createElement('input'); //создаем checkbox для текста каждого ответа
+        let answerText = document.createElement('input'); //skapar checkbox för varje svar
         answerText.type = 'checkbox';
         answerText.id = (key);
         answerText.name = ('answer_' + this.currentQuestion);
 
-        let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
+        let labelAnswerText = document.createElement('label'); //skapar label för checkbox (text med svar)
         labelAnswerText.setAttribute('for', key);
         
-        labelAnswerText.innerHTML = this.escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
+        labelAnswerText.innerHTML = this.escapeHTML(element); // användar function för att korrekt skildring HTML taggar i text med svar
         answerTextWrap.appendChild(answerText);
         answerTextWrap.appendChild(labelAnswerText);
       }
