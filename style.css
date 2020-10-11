@@ -1,22 +1,50 @@
 body{
   font-family: Arial;
+  background-color: wheat;
+  min-width: 40em;
 }
 
 h1 {
+  font-family: 'Frijole', cursive;
   color: orangered;
+  text-align: center;
+}
+
+#root {
+  border: 1px solid orangered;
+  text-align: center;
+  height: 30em;
+  max-width: 50em;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+#btnGo {
+  height: 3em;
+  cursor: pointer;
 }
 
 #btnNext {
   height: 3em;
+  cursor: pointer;
+}
+
+#questionCounter {
+  height: 3em;
+  vertical-align: middle;
+  text-align: left;
 }
 
 #questText {
   height: 3em;
+  vertical-align: middle;
+  border: 1px solid green;
+  
 }
 
 #answerList {
   height: 8em;
-  border: 1px solid orangered;
+  border: 1px solid yellow;
 }
 
 li {

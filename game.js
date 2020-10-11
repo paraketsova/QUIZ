@@ -98,6 +98,7 @@ class Game {
 
     root.innerHTML = '';  // delete name/size block with btn 
     let questionCounter = document.createElement('div'); //создаем строку с номером текущего вопроса
+    questionCounter.id = 'questionCounter';
     questionCounter.innerHTML = ((this.currentQuestion + 1) + " / " + this.questionList.size);  // выводим номер вопроса / size
     this.root.appendChild(questionCounter); 
   
@@ -130,9 +131,8 @@ class Game {
       }
     }
    
-    let btnNext = document.createElement('input');
-    btnNext.type = 'image';
-    btnNext.src = 'btnNext.png';
+    let btnNext = document.createElement('button');
+    btnNext.innerHTML = 'NEXT';
     btnNext.id = 'btnNext';
     this.root.appendChild(btnNext); 
 
