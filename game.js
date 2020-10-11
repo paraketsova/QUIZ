@@ -194,8 +194,10 @@ class Game {
         );
 
         if (isCorrect) {
-          points++;
+          return points + 1;
         }
+
+        return points;
       },
       0
     );
