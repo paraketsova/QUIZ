@@ -184,19 +184,21 @@ class Game {
   }
 
   getPoints() {
-    let sumPoints = 0;
     console.log(this.playersAnswerList); // TEST
 
-    for (let i = 0; i < this.playersAnswerList.length; i++) {
-      const isCorrect = this.compareOneAnswer(
-        this.playersAnswerList[i],
-        this.questionList.items[i].correct_answers
-      );
+    const sumPoints = this.playersAnswerList.reduce(
+      (points, playersAnswer, i) => {
+        const isCorrect = this.compareOneAnswer(
+          playersAnswer,
+          this.questionList.items[i].correct_answers
+        );
 
-      if (isCorrect) {
-        sumPoints++;
-      }
-    }
+        if (isCorrect) {
+          points++;
+        }
+      },
+      0
+    );
 
     return sumPoints;
   }
