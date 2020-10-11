@@ -11,8 +11,8 @@ class Game {
 
   start (event) {
     const btnPlay = document.createElement('button'); //создаем кнопку как элемент 
-
-    btnPlay.innerHTML = 'Play now!'; 
+    btnPlay.id = 'btnPlay';
+    btnPlay.innerHTML = 'PLAY NOW'; 
     btnPlay.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
       this.play();
     });
@@ -36,23 +36,23 @@ class Game {
     this.root.appendChild(labelSizeQuizRoot); 
 
     let divSizeQuiz = document.createElement('div'); //создаем input для радиокнопок
-    this.root.appendChild(divSizeQuiz); 
-
-
-
+    divSizeQuiz.id = 'divSizeQuiz';
+    this.root.appendChild(divSizeQuiz);
+ 
     let sizeQuizRadio5 = document.createElement('input'); //создаем input для выбора 5 вопросов 
     divSizeQuiz.appendChild(sizeQuizRadio5);
     sizeQuizRadio5.type = 'radio';
     sizeQuizRadio5.name = 'sizeQuizRadio'; // задаём обеим кнопкам одно имя, чтобы (или)
     sizeQuizRadio5.id = 'radio5';
     sizeQuizRadio5.value = 'radio5';
+    sizeQuizRadio5.checked = true;
 
     let labelRadio5 = document.createElement('label'); //создаем лейбл к input для выбора 5 вопросов 
-    labelRadio5.for = 'radio5';
+    labelRadio5.setAttribute('for', 'radio5');
     labelRadio5.innerText = '5';
     divSizeQuiz.appendChild(labelRadio5);
 
-   let sizeQuizRadio10 = document.createElement('input'); //создаем input для выбора 10 вопросов 
+    let sizeQuizRadio10 = document.createElement('input'); //создаем input для выбора 10 вопросов 
     divSizeQuiz.appendChild(sizeQuizRadio10);
     sizeQuizRadio10.type = 'radio';
     sizeQuizRadio10.name = 'sizeQuizRadio';  // задаём обеим кнопкам одно имя, чтобы (или)
@@ -60,12 +60,14 @@ class Game {
     sizeQuizRadio10.value = 'radio10';
 
     let labelRadio10 = document.createElement('label'); //создаем лейбл к input для выбора 10 вопросов 
-    labelRadio10.for = 'radio10';
+    labelRadio10.setAttribute('for', 'radio10');
     labelRadio10.innerText = '10';
     divSizeQuiz.appendChild(labelRadio10);
 
     let btnAskQ = document.createElement('button'); //создаем кнопку GO как элемент 
-    btnAskQ.innerHTML = 'Go!'; 
+    btnAskQ.innerHTML = 'GO';
+    btnAskQ.id = 'btnAskQ';
+
     this.root.appendChild(btnAskQ);
     btnAskQ.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
       this.askNameSize();
@@ -75,20 +77,18 @@ class Game {
   askNameSize () {
     let nameInput = document.getElementById('name');
     this.player = new Player(nameInput.value);
-    console.log(this.player.name); ////    TEST
-
 
     let sizeQuizRadio5 = document.getElementById('radio5');
+
     let size = 0;
 
     if (sizeQuizRadio5.checked) {  // поскольку для 5 и 10 вопросов разница лишь в цифре 5/10, упрощаем код для скачивания 5 или 10 вопросов.
       size = '5'; 
-    } 
-    else {size = '10'; 
+    } else {size = '10'; 
     } 
     
     this.questionList = new QuestionList(size);
-    this.questionList.load().then((result) => {
+    this.questionList.load().then((result) => {  //The then() method returns a Promise. It takes an argument: callback function for the success
       this.askCurrentQuestion(); 
     });
   }
@@ -121,7 +121,7 @@ class Game {
         answerText.name = ('answer_' + this.currentQuestion);
 
         let labelAnswerText = document.createElement('label'); //создаем лейбл к checkbox для answer text
-        labelAnswerText.for = ('answer_' + this.currentQuestion);
+        labelAnswerText.setAttribute('for', key);
         
         labelAnswerText.innerHTML = this.escapeHTML(element); // применяем функцию для корректного отображения HTML тегов в тексте вопроса
         answerTextWrap.appendChild(answerText);
@@ -160,6 +160,7 @@ class Game {
   showResults() {
     root.innerHTML = '';  // delete question's block with btn 
     let resultField = document.createElement('div'); //создаем текстовый блок с результатами
+    resultField.id = 'resultField';
     this.root.appendChild(resultField);
 
     let sumPoints = this.getPoints();
@@ -172,7 +173,7 @@ class Game {
     resultField.appendChild(resultField2);
 
     let btnPlayAgain =  document.createElement('button'); //add button 'Play again' btnNext.type = 'image';
-    btnPlayAgain.innerHTML = 'Play new game!'; 
+    btnPlayAgain.innerHTML = 'NEW GAME'; 
     btnPlayAgain.id = 'btnPlayAgain';
     this.root.appendChild(btnPlayAgain);
     btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
@@ -183,6 +184,8 @@ class Game {
 
   getPoints() {
     let sumPoints = 0;
+    console.log(this.playersAnswerList); // TEST
+
     for (let i = 0; i < this.playersAnswerList.length; i++) {
       const isCorrect = this.compareOneAnswer(
         this.playersAnswerList[i],
