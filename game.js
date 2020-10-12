@@ -76,7 +76,7 @@ class Game {
   }
 
   askNameSize () {
-    let nameInput = document.getElementById('name');
+    let nameInput = document.getElementById('name'); //hittar element by Id - namesRoot och addera den i root
     this.player = new Player(nameInput.value);
 
     let sizeQuizRadio5 = document.getElementById('radio5');
@@ -233,7 +233,7 @@ class Game {
           return false;
         }
       } else {
-        // den option är inte korrect, och den ska bli finns i spelarens svaren
+        // den option är inte korrect, och den ska inte bli finns i spelarens svaren
         if (playersAnswer.includes(option2)) {
           return false;
         }
