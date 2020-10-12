@@ -23,7 +23,7 @@ class Game {
 
     this.root.innerHTML = ''; //  då root är tom
     
-    let labelnamesRoot = document.createElement('p'); // skapar text för input (för namn)
+    let labelnamesRoot = document.createElement('p'); // skapar fält text för input (spelarens namn)
     labelnamesRoot.innerText = ("Player's name:");
     this.root.appendChild(labelnamesRoot); 
 
