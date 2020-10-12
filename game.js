@@ -83,7 +83,7 @@ class Game {
 
     let size = 0;
 
-    if (sizeQuizRadio5.checked) {  // поскольку для 5 и 10 вопросов разница лишь в цифре 5/10, упрощаем код для скачивания 5 или 10 вопросов.
+    if (sizeQuizRadio5.checked) {  // vi tilldellar size värde 5 eller 10 beror på mängd frågor som använder vhar valt.
       size = '5'; 
     } else {size = '10'; 
     } 
@@ -94,24 +94,24 @@ class Game {
     });
   }
 
-  askCurrentQuestion() {     // - для каждого вопроса из QuestionList  item[i]:
+  askCurrentQuestion() {     // - för varje question QuestionList  item[i]:
 
-    root.innerHTML = '';  // delete name/size block with btn 
-    let questionCounter = document.createElement('div'); //создаем строку с номером текущего вопроса
+    root.innerHTML = '';  // tar borta name/size block med btn GO
+    let questionCounter = document.createElement('div'); // skapar fält med nummer current question
     questionCounter.id = 'questionCounter';
-    questionCounter.innerHTML = ((this.currentQuestion + 1) + " / " + this.questionList.size);  // выводим номер вопроса / size
+    questionCounter.innerHTML = ((this.currentQuestion + 1) + " / " + this.questionList.size);  // skriver nummer current question and size för den Quis
     this.root.appendChild(questionCounter); 
   
-    let questText = document.createElement('div'); //создаем поле для вывода текста вопроса
+    let questText = document.createElement('div'); // skapar fält för text med fråga
     questText.id = 'questText';
-    questText.innerHTML = this.escapeHTML(this.questionList.items[this.currentQuestion].question);  // användar function för att korrekt skildring HTML taggar i text med frågan
+    questText.innerHTML = this.escapeHTML(this.questionList.items[this.currentQuestion].question);  // användar metod escapeHTML (function för att korrekt skildring HTML taggar i text med frågan
     this.root.appendChild(questText); 
   
-    let answerList = document.createElement('ul'); //создаем поле для слота ответов
+    let answerList = document.createElement('ul'); //skapar fält för svarens wrap
     answerList.id = 'answerList';
     this.root.appendChild(answerList); 
     
-    for (let key in this.questionList.items[this.currentQuestion].answers) { // пройтись по всем ответам и вывести только ненулевые
+    for (let key in this.questionList.items[this.currentQuestion].answers) { //  for... in   = går genom svaren för att skriva bara svar med ngn text (utan tomma svaren)
       const element = this.questionList.items[this.currentQuestion].answers[key];
       if (element !== null) {
         let answerTextWrap = document.createElement('li'); //skapar checkbox wrap
@@ -122,7 +122,7 @@ class Game {
         answerText.name = ('answer_' + this.currentQuestion);
 
         let labelAnswerText = document.createElement('label'); //skapar label för checkbox (text med svar)
-        labelAnswerText.setAttribute('for', key);
+        labelAnswerText.setAttribute('for', key); // labelAnswerText
         
         labelAnswerText.innerHTML = this.escapeHTML(element); // användar function för att korrekt skildring HTML taggar i text med svar
         answerTextWrap.appendChild(answerText);
@@ -130,43 +130,43 @@ class Game {
       }
     }
    
-    let btnNext = document.createElement('button');
+    let btnNext = document.createElement('button'); 
     btnNext.innerHTML = 'NEXT';
     btnNext.id = 'btnNext';
     this.root.appendChild(btnNext); 
 
-    btnNext.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
-      this.savePlayersAnswer(); //отправляем выбранный ответ в массив (ответов на все вопросы квиза)
+    btnNext.addEventListener('click', (event) => { 
+      this.savePlayersAnswer(); // anropar metoden  savePlayersAnswer()    отправляем выбранный ответ в массив (ответов на все вопросы квиза)
 
       if (this.currentQuestion < this.questionList.size - 1) {
-        this.currentQuestion++;
-        this.askCurrentQuestion();
+        this.currentQuestion++; //späder på this.currentQuestion
+        this.askCurrentQuestion(); //anropar _den_ metoden igen
       } else {
-        this.showResults(); //  переход к окну с результатом после последнего вопроса.
+        this.showResults(); //  om det är sista frågan , anropar vi metodet showResult
       };
     })
   }
 
-  savePlayersAnswer() {      // проверить checked answers и пушнуть в массив (size = кол-во элм в массиве) имя ответа игрока 
-    let checkboxList = document.getElementsByName('answer_' + this.currentQuestion);
-    let playersAnswer = [];
+  savePlayersAnswer() {      // pushar checked answers i playersAnswer[] och den i i this.playersAnswerList[]
+    let checkboxList = document.getElementsByName('answer_' + this.currentQuestion); //skapar HTML collection 
+    let playersAnswer = [];  // vi skapar tomt array för playersAnswer 
     for (let i=0; i < checkboxList.length; i++) {
       if (checkboxList[i].checked) {
-        playersAnswer.push(checkboxList[i].id);
+        playersAnswer.push(checkboxList[i].id); //push den checkbox id i array playersAnswer
       }
     }
-    this.playersAnswerList.push(playersAnswer); 
+    this.playersAnswerList.push(playersAnswer); //pushar varje playersAnswer[] i this.playersAnswerList[]
   }
 
-  showResults() {
-    root.innerHTML = '';  // delete question's block with btn 
-    let resultField = document.createElement('div'); //создаем текстовый блок с результатами
+  showResults() {   //fick och visar poäng, restart game
+    root.innerHTML = '';  // ta borta question's block med btn 
+    let resultField = document.createElement('div'); // skapar fält för result
     resultField.id = 'resultField';
     this.root.appendChild(resultField);
 
-    let sumPoints = this.getPoints();
+    let sumPoints = this.getPoints(); // skapar en variabel sumPoints. Hit returnerar vi värde from metoden this.getPoints() ---186
 
-    let resultField1 = document.createElement('p'); //создаем строку блока
+    let resultField1 = document.createElement('p'); //skapar paragraf för sträng med resultaten
     let resultField2 = document.createElement('p'); 
     resultField1.innerHTML = ('Good game, ' + this.player.name + '!');
     resultField2.innerHTML = ('You got '+ sumPoints + ' out of ' + this.questionList.size + ' answers correct!');
@@ -177,14 +177,14 @@ class Game {
     btnPlayAgain.innerHTML = 'NEW GAME'; 
     btnPlayAgain.id = 'btnPlayAgain';
     this.root.appendChild(btnPlayAgain);
-    btnPlayAgain.addEventListener('click', (event) => { // вместо обычной ф мы пишем лямбда ф, которая позволяет ссылаться на внешнюю область видимости, так как иначе мы не можем писать её ведь у лямбды нет свойства this она по умолчанию ищет ее выше, на уровне класса.
+    btnPlayAgain.addEventListener('click', (event) => { 
       this.reset();
       this.play();
     });
   }
 
-  getPoints() {
-    console.log(this.playersAnswerList); // TEST
+  getPoints() {  // beräknar poäng   (sumPoints, som vi returnerar i showrResult )
+    console.log(this.playersAnswerList); // TEST provar titta på this.playersAnswerList (för debugging)
 
     const sumPoints = this.playersAnswerList.reduce(
       (points, playersAnswer, i) => {
@@ -205,7 +205,7 @@ class Game {
     return sumPoints;
   }
 
-  compareOneAnswer(playersAnswer, correctAnswer) {
+  compareOneAnswer(playersAnswer, correctAnswer) { // jämför spelarens svaren med korrekt svaren 
     /* Example:
       
       playersAnswer = [
@@ -223,17 +223,17 @@ class Game {
 
     for (let option in correctAnswer) {
       const option2 = option.slice(0, -8); // 'answer_c_correct' -> 'answer_c'
-
+      
       // Example: option = 'answer_c_correct'
       // Example: option2 = 'answer_c'
-
+      
       if (correctAnswer[option] === 'true') {
-        // This option is correct, must be in the player's answer
-        if (!playersAnswer.includes(option2)) {
+        // den option är korrect, och måste finns i spelarens svaren
+        if (!playersAnswer.includes(option2)) { //method determines whether an array includes a certain element, returning true or false as appropriate.
           return false;
         }
       } else {
-        // This option is incorrect, must not be in the player's answer
+        // den option är inte korrect, och den ska bli finns i spelarens svaren
         if (playersAnswer.includes(option2)) {
           return false;
         }
@@ -250,7 +250,7 @@ class Game {
     this.playersAnswerList = []; 
   }
 
-  escapeHTML(text) {
+  escapeHTML(text) {  //det är function för att korrekt skildring HTML taggar i text med frågan
     return text
       .replace(/&/g,'&amp;')
       .replace(/</g,'&lt;')
